@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body>
+<div class="x-nav"><span class="layui-breadcrumb">
+    <a href="">首页</a>
+    <a href="">网站安全</a>
+    <a> <cite>系统日志</cite></a> </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh"
+           style="line-height:30px"></i>
+    </a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header"> 网站日志</div>
+                <div class="layui-card-body">
+                    <span class="layui-badge layui-bg-orange">管理员</span>
+                    <span class="layui-badge layui-bg-green">用户</span>
+                    <span class="layui-badge">游客</span>
+                </div>
+                <div class="layui-card-body  aman-table-scroll">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <tr>
+                            <th>用户</th>
+                            <th>行为</th>
+                            <th>URL</th>
+                            <th>Method</th>
+                            <th>结果</th>
+                            <th>浏览器</th>
+                            <th>设备</th>
+                            <th>Cookie</th>
+                            <th>IP</th>
+                            <th>时间</th>
+                            <th>备注</th>
+                            <th>数据</th>
+                        </tr>
+                        </thead>
+                        <tbody class="aman-a">
+                        {foreach $list as $key=>$v}
+                        <tr>
+                            <td>
+                                {switch $v.usertype}
+                                {case 1} <span class="layui-badge layui-bg-green">{$v.getUser.nickname}</span>{/case}
+                                {case 2}<span class="layui-badge layui-bg-orange">{$v.getAdmin.nickname}</span>{/case}
+                                {default /}<span class="layui-badge layui-bg-gray ">游客</span>
+                                {/switch}
+                            </td>
+                            <td>{$v.type}</td>
+                            <td><a>{$v.url}</a></td>
+                            <td>{$v.method}</td>
+                            <td>
+                                {if $v.result==1}
+                                <span class="aman-text-success">成功</span>
+                                {else/}
+                                <span class="aman-text-error">失败</span>
+                                {/if}
+                            </td>
+                            <td>
+                                <img class="browser" src="{$v.agent|getBrowser}" alt="">
+                            </td>
+                            <td>{$v.agent|getOs}</td>
+                            <td>{$v.cookie}</td>
+                            <td>{$v.ip|default="0.0.0.0"}</td>
+                            <td>{$v.create_time}</td>
+                            <td>{$v.info}</td>
+                            <td>{:getLogData($v.data,200)}</td>
+                        </tr>
+                        {/foreach}
+
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    <div class="page">
+                        {$page|raw}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+{include file="public/foot"}
+</html>

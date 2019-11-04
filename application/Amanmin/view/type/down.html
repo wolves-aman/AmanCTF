@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a href="">分类管理</a>
+            <a>
+              <cite>下载资源分类</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    下载资源分类列表
+                </div>
+                <div class="layui-card-body">
+                    <button class="layui-btn" onclick="xadmin.open('添加','add?type=2','400','300')"><i class="layui-icon"></i>增加</button>
+                </div>
+                <div class="layui-card-body  aman-table-scroll">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <th>ID</th>
+                        <th>标题</th>
+                        <th>排序(双击修改)</th>
+                        <th>数量</th>
+                        <th>添加时间</th>
+                        <th>操作</th>
+                        </thead>
+                        <tbody>
+                        {foreach $list as $key=>$v}
+                            <tr>
+                                <td>{$key+1}</td>
+                                <td>{$v.name}</td>
+                                <td><span ondblclick="changeOrder(this)" data-id="{$v.id}" data-order="{$v.order}" style="margin:auto;cursor: pointer" class="layui-badge-rim">{$v.order}</span></td>
+                                <td>{$v.soft_count}</td>
+                                <td>{$v.create_time}</td>
+                                <td class="td-manage">
+                                    <button class="layui-btn layui-btn-normal layui-btn-xs" onclick="xadmin.open('详情','/amanmin/type/softinfo?id={$v.id}','800','600')"><i class="layui-icon">&#xe615;</i>详情
+                                    </button>
+                                    <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="del(this,{$v.id})" ><i class="layui-icon"></i>删除
+                                    </button>
+                                </td>
+                            </tr>
+                        {/foreach}
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+    function del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            $.post({
+                url:'/amanmin/type/del',
+                data:{id:id},
+                success:function (res) {
+                    if(res.code==1){
+                        layer.msg(res.msg, {time: 1000},function () {
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {
+                            anim:6,
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+        });
+    }
+
+
+
+        function changeOrder(that) {
+            var id=$(that).attr('data-id');
+            var order=$(that).attr('data-order');
+            layer.prompt({title: '修改排序[ID:'+id+']', formType: 0}, function(num, index){
+                $.post({
+                    url:'/amanmin/type/changeOrder',
+                    data:{id:id,order:num},
+                    success:function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg,{time:1000},function () {
+                                location.reload();
+                            });
+                            layer.close(index)
+                        } else {
+                            layer.msg(res.msg, {
+                                anim:6,
+                                icon: 5,
+                                time: 2000
+                            });
+                            $(that).attr('data-order',order);
+                        }
+
+                    }
+                })
+            });
+        }
+
+</script>
+{include file="public/foot"}
+</html>

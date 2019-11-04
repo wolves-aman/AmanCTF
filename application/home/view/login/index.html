@@ -1,0 +1,55 @@
+<!doctype html>
+<html  class="x-admin-sm">
+{include file="public/head"}
+<body class="body-login">
+
+<div class="aman-login">
+    <div class="aman-login-content">
+        <form class="aman-login-form">
+            <h2>Sign In</h2>
+            <input id="username" name="username" type="text" placeholder="请输入账号">
+            <input id="password" name="password" type="password" placeholder="请输入密码">
+            <a href="/reg" style="float: left;margin-left:150px;margin-top: 20px;">注册</a>
+            <button id="loginbtn" style="float: right;margin-right:150px;" >登录</button>
+            <p id="hint" class="hint error" style="display: none;width: 300px;margin: auto;margin-bottom: 0;margin-top: 90px;"></p>
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+{include file="public/js"}
+<script src="/static/home/js/aman.js"></script>
+<script>
+    $(function(){
+        $("#loginbtn").click(function(){
+            $(this).attr('disabled',true);
+            $(this).html("Loading");
+            $.ajax({
+                url:'/login',
+                type:"POST",
+                data:$("form").serialize(),
+                dataType:"json",
+                success:function(data){
+                    $("#loginbtn").attr('disabled',false);
+                    $("#loginbtn").html("登录");
+                    if(data.code==1){
+                        if(data.data=='2'){
+                            hint($("#hint"),'warning',data.msg);
+                        }else{
+                            hint($("#hint"),'success',data.msg);
+                            location.href=data.url;
+                        }
+                    }else{
+                        hint($("#hint"),'error',data.msg);
+                    }
+                }
+            })
+            return false;
+        });
+    });
+
+</script>
+{include file="public/foot"}
+</html>

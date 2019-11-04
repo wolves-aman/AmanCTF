@@ -1,0 +1,96 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+<style>
+    table td{
+        padding: 0 5px;
+        font-size: 14px;
+    }
+</style>
+<div class="body">
+    <div  style="width: 1000px;margin: auto;padding-bottom: 20px;">
+
+        <div class="aman-box" style="height: 150px;">
+            <h2 class="title text-warning">说明</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body">
+                <p class="text-warning" style="text-indent: 2em; ">以上工具均采集自网络，我们虽然尽可能的去除后门，但仍无法保证绝对安全。请谨慎使用。若以上软件有侵犯或可能侵犯到您的权益，请联系915293740@qq.com。我们会第一时间进行删除。谢谢您的合作！</p>
+            </div>
+
+        </div>
+
+        <div class="am-tabs" data-am-tabs>
+            <ul class="am-tabs-nav am-nav am-nav-tabs am-nav-justify">
+                {foreach $typelist as $key=>$v}
+                <li class="{$key==0?'am-active':''}"><a href="#tab{$v.id}">{$v.name}</a></li>
+                {/foreach}
+            </ul>
+
+            <div class="am-tabs-bd">
+
+                {foreach $typelist as $key=>$v}
+                <div class="am-tab-panel {$key==0?'am-active':''} " id="tab{$v.id}">
+
+                    <table class="aman-table  aman-table-bd"  style="white-space: nowrap;font-size: 13px;">
+                        <thead>
+                        <th>ID</th>
+                        <th>软件名字</th>
+                        <th>描述</th>
+                        <th>大小</th>
+                        <th>密码</th>
+                        <th>作者</th>
+                        <th>相关链接</th>
+                        <th>添加时间</th>
+                        <th>更新时间</th>
+                        <th>操作</th>
+                        </thead>
+                        <tbody>
+                        {foreach $v.list as $key2=>$item}
+                        <tr>
+                            <td>{$key2+1}</td>
+                            <td style="white-space: normal;"> {$item.title}</td>
+                            <td style="white-space: normal;font-size: 12px;">
+                               {$item.des}
+                            </td>
+                            <td >{$item.size}</td>
+                            <td>{$item.pass}</td>
+                            <td>{$item.author}</td>
+                            <td>
+                                {if $item.home!=""}
+                                <a class="am-btn am-btn-sm aman-btn" target="_blank" href="{$item.home}">访问</a>
+                                {else /}
+                                无
+                                {/if}
+                            </td>
+                            <td>{$item.create_time}</td>
+                            <td>{$item.update_time}</td>
+                            <td>
+                                <a  href="{$item.url}" target="_blank" class="am-btn am-btn-sm aman-btn"><span class="am-icon am-icon-download"></span>下载</a>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+
+
+    </div>
+
+
+</div>
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+
+{include file="public/foot"}
+</html>

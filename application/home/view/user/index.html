@@ -1,0 +1,133 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+<link rel="stylesheet" href="/static/admin/lib/layui/css/layui.css" media="all">
+<div class="body">
+    <div class="aman-h12" style="width: 1000px;margin: auto;">
+
+        <div class="aman-box" style="height: auto;width: 100%;margin-top: 40px;background: rgba(0,255,255,0.03);">
+            <h2 class="title">设置</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+
+            <div class="aman-body">
+                <style>
+                    .am-form input {
+                        background: rgba(0, 14, 40, .6) !important;
+                        height: 37px;
+                        border: 1px solid #20558b !important;
+                        color: #7997F7 !important;
+                        padding: 0 10px;
+                    }
+
+                    label {
+                        color: #0ff
+                    }
+
+                    .layui-upload-img {
+                        width: 92px;
+                        height: 92px;
+                        border: none;
+                    }
+                </style>
+                <form action="/user/edit" method="post" class="am-form">
+                    <div class="layui-upload">
+                        <button type="button" class="am-btn aman-btn am-btn-sm" id="cover">上传图片</button>
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" src="{:session('user.cover')}"  onerror="this.src='/heads/hover.png'" id="demo1">
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                    <div class="am-form-group">
+                        <label>昵称</label>
+                        <input type="text" name="nickname" class="input" value="{:session('user.nickname')}"
+                               placeholder="输入昵称">
+                    </div>
+                    <div class="am-form-group">
+                        <label>签名</label>
+                        <input type="text" name="sign" class="input" placeholder="输入签名" value="{:session('user.sign')}">
+                    </div>
+                    <div class="am-form-group">
+                        <label>新密码</label>
+                        <input type="text" class="input" placeholder="输入新密码">
+                    </div>
+                    <p class="am-form-help">不修改留空即可</p>
+                    <div class="am-form-group">
+                        <label>确认新密码</label>
+                        <input type="text" class="input" placeholder="再次输入新密码">
+                    </div>
+
+                    <p>
+                        <button id="loginbtn" class="am-btn aman-btn">保存</button>
+                    </p>
+                    <p id="hint" class="hint success" style="display: none"></p>
+                </form>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!----foot结束---->
+{include file="public/js"}
+<script src="/static/home/js/aman.js"></script>
+<script src="/static/admin/lib/layui/layui.js" charset="utf-8"></script>
+<script>
+    layui.use('upload', function () {
+        var $ = layui.jquery
+            , upload = layui.upload;
+
+        upload.render({
+            elem: '#cover'
+            , url: '/user/uploadcover'
+            , before: function (obj) {
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    $('#demo1').attr('src', result); //图片链接（base64）
+                });
+            }
+            , done: function (res) {
+                //如果上传失败
+                return layer.msg(res.msg);
+                /*if(res.code == 1){
+                    return layer.msg('上传失败');
+                }else{
+
+                }*/
+                //上传成功
+            }
+        });
+
+    });
+</script>
+<script>
+    $(function () {
+
+        $("#loginbtn").click(function () {
+            $.ajax({
+                url: '/user/edit',
+                type: "POST",
+                data: $("form").serialize(),
+                dataType: "json",
+                success: function (data) {
+                    if (data.code == 1) {
+                        hint($("#hint"), "success", data.msg);
+                    } else {
+                        hint($("#hint"), "warning", data.msg);
+                    }
+                }
+            })
+            return false;
+        });
+    });
+
+
+</script>
+
+{include file="public/foot"}
+</html>

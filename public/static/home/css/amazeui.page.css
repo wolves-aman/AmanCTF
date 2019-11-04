@@ -1,0 +1,32 @@
+/*secondary*/
+.am-page-secondary li a{
+	color: #3bb4f2;
+}
+.am-page-secondary .am-active > a,.am-page-secondary .am-active > a:hover{
+	background-color: #3bb4f2;
+	border-color: #3bb4f2;
+}
+/*success*/
+.am-page-success li a{
+	color: #5eb95e;
+}
+.am-page-success .am-active > a,.am-page-success .am-active > a:hover{
+	background-color: #5eb95e;
+	border-color: #5eb95e;
+}
+/*warning*/
+.am-page-warning li a{
+	color: #F37B1D;
+}
+.am-page-warning .am-active > a,.am-page-warning .am-active > a:hover{
+	background-color: #F37B1D;
+	border-color: #F37B1D;
+}
+/*danger*/
+.am-page-danger li a{
+	color: #dd514c;
+}
+.am-page-danger .am-active > a,.am-page-danger .am-active > a:hover{
+	background-color: #dd514c;
+	border-color: #dd514c;
+}

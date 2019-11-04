@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <blockquote class="layui-elem-quote">欢迎管理员：
+                        <span class="x-red">{:session('admin.nickname')}</span>！当前时间:{:date('Y-m-d H:i:s')}
+                    </blockquote>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">数据统计</div>
+                <div class="layui-card-body ">
+                    <ul class="layui-row layui-col-space10 layui-this x-admin-carousel x-admin-backlog">
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>用户数</h3>
+                                <p>
+                                    <cite>{$countinfo.user}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>入侵拦截数</h3>
+                                <p>
+                                    <cite>{$countinfo.safe}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>题目数</h3>
+                                <p>
+                                    <cite>{$countinfo.ctf}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>评论数</h3>
+                                <p>
+                                    <cite>{$countinfo.comment}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>工具数</h3>
+                                <p>
+                                    <cite>{$countinfo.soft}</cite></p>
+                            </a>
+                        </li>
+                        <li class="layui-col-md2 layui-col-xs6 ">
+                            <a href="javascript:;" class="x-admin-backlog-body">
+                                <h3>在线工具数</h3>
+                                <p>
+                                    <cite>{$countinfo.tools}</cite></p>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm12 layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">最新一周新增用户</div>
+                <div class="layui-card-body" style="min-height: 280px;">
+                    <div id="main1" class="layui-col-sm12" style="height: 300px;"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-sm12 layui-col-md6">
+            <div class="layui-card">
+                <div class="layui-card-header">分类统计</div>
+                <div class="layui-card-body" style="min-height: 280px;">
+                    <div id="main3" class="layui-col-sm12" style="height: 300px;"></div>
+
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">系统信息</div>
+                <div class="layui-card-body ">
+                    <table class="layui-table">
+                        <tbody>
+                        <tr>
+                            <th>程序版本</th>
+                            <td>1.0.0</td></tr>
+                        <tr>
+                            <th>服务器地址</th>
+                            <td>{:request()->server()['SERVER_NAME']}</td></tr>
+                        <tr>
+                            <th>操作系统</th>
+                            <td>{:PHP_OS}</td></tr>
+                        <tr>
+                            <th>运行环境</th>
+                            <td>{:request()->server()['SERVER_SOFTWARE']}</td></tr>
+                        <tr>
+                            <th>PHP版本</th>
+                            <td>{:PHP_VERSION}</td></tr>
+                        <tr>
+                            <th>PHP运行方式</th>
+                            <td>{:php_sapi_name()}</td></tr>
+                        <tr>
+                            <th>MYSQL版本</th>
+                            <td>{:getMysqlVer()}</td></tr>
+                        <tr>
+                            <th>ThinkPHP</th>
+                            <td>{$Think.VERSION}</td></tr>
+
+                        <tr>
+                            <th>剩余空间</th>
+                            <td>{:round((disk_free_space(".")/(1024*1024)),2)}M</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">开发团队</div>
+                <div class="layui-card-body ">
+                    <table class="layui-table">
+                        <tbody>
+                        <tr>
+                            <th>版权所有</th>
+                            <td>萧县狼涯网络工作室
+                                <a href="http://194nb.com/" target="_blank">访问博客</a></td>
+                        </tr>
+                        <tr>
+                            <th>开发者</th>
+                            <td>狼涯(915293740@qq.com)</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+<script src="https://cdn.bootcss.com/echarts/4.2.1-rc1/echarts.min.js"></script>
+<script type="text/javascript">
+    // 基于准备好的dom，初始化echarts实例
+    var myChart = echarts.init(document.getElementById('main1'));
+    // 指定图表的配置项和数据
+    var days=[],nums=[];
+    {foreach $newuser as $key=>$v}
+    days.push('{$v.days}');
+    nums.push('{$v.num}');
+    {/foreach}
+    var option = {
+        grid: {
+            top: '5%',
+            right: '1%',
+            left: '1%',
+            bottom: '10%',
+            containLabel: true
+        },
+        tooltip: {
+            trigger: 'axis'
+        },
+        xAxis: {
+            type: 'category',
+            data: days
+        },
+        yAxis: {
+            type: 'value'
+        },
+        series: [{
+            name:'用户量',
+            data: nums,
+            type: 'line',
+            smooth: true
+        }]
+    };
+
+
+
+
+
+    myChart.setOption(option);
+    var myChart = echarts.init(document.getElementById('main3'));
+    var title=[],data=[];
+    {foreach $CountType as $key=>$v}
+     title.push('{$v.name}');
+     data.push({name:'{$v.name}',value:{$v.subject_count}});
+     {/foreach}
+    var option = {
+        tooltip : {
+            trigger: 'item',
+            formatter: "{a} <br/>{b} : {c} ({d}%)"
+        },
+        legend: {
+            orient: 'vertical',
+            left: 'left',
+            data: title
+        },
+        series : [
+            {
+                name: '题目分类',
+                type: 'pie',
+                radius : '55%',
+                center: ['50%', '60%'],
+                data:data,
+                itemStyle: {
+                    emphasis: {
+                        shadowBlur: 10,
+                        shadowOffsetX: 0,
+                        shadowColor: 'rgba(0, 0, 0, 0.5)'
+                    }
+                }
+            }
+        ]
+    };
+    // 使用刚指定的配置项和数据显示图表。
+    myChart.setOption(option);
+
+
+
+</script>
+{include file="public/foot"}
+</html>

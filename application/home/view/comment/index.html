@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+<div class="body">
+    <div class="aman-h12" style="width: 1000px;margin: auto;">
+        <div class="aman-box" style="height: 200px;padding-top: 0px;">
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body foot">
+                <textarea id="content" class="input aman-scorll" placeholder="回复" style="resize: none;width: 100%;height: 100px;padding: 10px;"></textarea>
+                <a id="cancel_reply" style="margin-top: 20px;margin-left: 10px;color:#0ff;display: none" class="fl">取消回复</a>
+
+                <button id="reply" class="aman-btn am-btn fr" style="margin-top: 15px;width: 80px;">回复</button>
+                <p id="hint" class="hint error" style="float:right;width: calc(100% - 250px);margin-right: 40px;display: none">123</p>
+            </div>
+        </div>
+        <div class="aman-box" style="height: auto;padding-bottom: 40px">
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <h2 class="title"> 留言板（{:count($list)}）</h2>
+            <style>
+                .reply{
+                    padding: 2px 5px;
+                    display: none;
+                }
+                .am-comment:hover .reply{
+                    display:inline;
+                }
+
+            </style>
+            <ul class="am-comments-list am-comments-list-flip">
+                {foreach $list as $key=>$v}
+
+                <li id="link-to-user{$v.user_id}" class="am-comment am-comment-primary {:session('user.id')==$v.user_id && $v.type!='1'?'am-comment-flip':''}"><a href="#link-to-user-home"><img src="{$v.type=='1'?$v.getadmin.cover:$v.getuser.cover}" alt="" class="am-comment-avatar" width="48" height="48"></a>
+                    <div class="am-comment-main">
+                        <header class="am-comment-hd">
+                            <div class="am-comment-meta"><a href="{$v.type=='1'?'#':'/info?id='.$v.user_id}"  class="am-comment-author {$v.type=='1'?'text-error':''}">{$v.type=='1'?$v.getadmin.nickname:$v.getuser.nickname}</a> 评论于
+                                <time>{$v.create_time}</time>
+                            </div>
+                        </header>
+                        <div class="am-comment-bd">
+                            <p>{if $v.reply!=''}
+                                <a class="{$v.who=='1'?'text-error':''}" href="#link-to-user{$v.who=='1'?$v.getreply2.id:$v.getreply.id}">@{$v.who=='1'?$v.getreply2.nickname:$v.getreply.nickname}</a>
+                                {/if}
+                                {$v.content}
+                                {if $v.user_id!=session('user.id') || $v.type=='1'}
+                                <span style="" data-id="{$v.id}" data-nickname="{$v.type=='1'?$v.getadmin.nickname:$v.getuser.nickname}" class="reply aman-btn am-btn am-btn-xs" >回复</span>
+                                {/if}
+                            </p>
+                        </div>
+                    </div>
+                </li>
+
+                {/foreach}
+            </ul>
+
+        </div>
+
+    </div>
+</div>
+
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}.
+<script src="/static/home/js/aman.js"></script>
+<script>
+    var $nickname,$id;
+
+    $(function () {
+       $(".reply").click(function () {
+           $id=$(this).attr('data-id');
+           $nickname=$(this).attr('data-nickname');
+           $("#content").attr("placeholder","回复:"+$nickname);
+           $("#cancel_reply").show();
+       })
+
+        $('#cancel_reply').click(function () {
+            $("#cancel_reply").hide();
+            $id="";
+            $nickname="";
+            $("#content").attr("placeholder","回复");
+
+        })
+
+        $("#reply").click(function () {
+            var content=$('#content').val();
+            if(content==""){
+                hint($("#hint"),'warning',"请输入内容");
+                return "";
+            }
+            $.ajax({
+                url:"/comment/reply",
+                data:{id:$id,content:content},
+                type:'post',
+                success:function (res) {
+                    if(res.code==1){
+                        location.reload();
+                    }else{
+                        hint($("#hint"),'warning',res.msg);
+                    }
+                }
+            })
+            return false;
+        })
+    });
+
+
+</script>
+{include file="public/foot"}
+</html>

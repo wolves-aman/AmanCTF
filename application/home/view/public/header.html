@@ -1,0 +1,50 @@
+<div class="header">
+    <div class="left_btn">
+        <ul>
+            <li class="{$controller=='index'?'active':''}">
+                <a href="/index">首页</a>
+            </li>
+            <li class="{$controller=='challenges'?'active':''}">
+                <a href="/challenges">题目</a>
+            </li>
+            <li class="{$controller=='rank'?'active':''}">
+                <a href="/rank">排行榜</a>
+            </li>
+
+            <li class="{$controller=='down'?'active':''}">
+                <a href="/down">资源库</a>
+            </li>
+
+        </ul>
+    </div>
+    <div class="htitle">{$sysinfo.title}</div>
+    <div class="right_btn">
+        <ul>
+            <li class="{$controller=='comment'?'active':''}">
+                <a href="/comment">留言板</a>
+            </li>
+            <li class="{$controller=='tools'?'active':''}">
+                <a href="/tools">CTF工具箱</a>
+            </li>
+            <li class="{$controller=='links'?'active':''}">
+                <a href="/links">友情链接</a>
+            </li>
+
+            {if session("?user.id")}
+            <li class="am-dropdown" data-am-dropdown data-am-dropdown-toggle>
+                <a class="am-dropdown-toggle " style="color: #fff;" href="javascript:;">{:session('user.nickname')}
+                </a>
+                <ul class="am-dropdown-content">
+                    <li><a href="/info?id={:session('user.id')}"><span class="am-icon-bell-o"></span> 资料</a></li>
+                    <li><a href="/user"><span class="am-icon-cog"></span> 设置</a></li>
+                    <li><a href="/logout"><span class="am-icon-power-off"></span> 退出</a></li>
+                </ul>
+            </li>
+            {else /}
+            <li>
+                <a href="/login">登录</a>
+            </li>
+            {/if}
+        </ul>
+    </div>
+</div>

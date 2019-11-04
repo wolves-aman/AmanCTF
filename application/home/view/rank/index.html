@@ -1,0 +1,50 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+
+<div class="body">
+    <div class="aman-h12" style="width: 1000px;margin: auto;">
+        <div class="aman-box" style="height: auto;" >
+            <h2 class="title">排行榜 </h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body">
+                <table class="aman-table aman-sort aman-table-bd">
+                    <thead>
+                    <th>排名</th>
+                    <th>用户</th>
+                    <th>解题数</th>
+                    <th>分数</th>
+                    <th>最后解题时间</th>
+                    </thead>
+                    <tbody>
+                    {foreach $list as $key=>$v}
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td><span onclick="location.href='/info?id={$v.id}'">{$v.nickname}</span></td>
+                        <td>{$v.get_count_count+0}</td>
+                        <td>{$v.get_count_sum+0}</td>
+                        <td>{$v.etime.end_time?date("Y-m-d H:i",$v.etime.end_time):''}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+
+{include file="public/foot"}
+</html>

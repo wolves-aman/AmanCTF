@@ -1,0 +1,251 @@
+<!doctype html>
+<html>
+
+{include file="public/head"}
+
+<body data-type="index">
+<style>
+    .time{font-size: 12px;}
+
+</style>
+<div class="body">
+    {include file="public/header"}
+    <div class="am-u-md-3 aman-h12">
+        <div class="aman-box aman-s-h6">
+            <h2 class="title">个人排行榜 </h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body aman-scorll" style="height: 100%">
+                <table class="aman-table aman-sort">
+                    <thead>
+                    <th width="60">排名</th>
+                    <th>用户</th>
+                    <th width="80">分数</th>
+                    </thead>
+                    <tbody>
+                    {foreach $list as $key=>$v}
+                    <tr>
+                        <td>{$key+1}</td>
+                        <td>{$v.nickname}</td>
+                        <td>{$v.get_count_sum+0}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+        <div class="aman-box aman-s-h6">
+            <h2 class="title">最新注册</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body" >
+                <table class="aman-table ">
+                    <thead>
+                    <th>用户</th>
+                    <th  width="80">分数</th>
+                    <th>时间</th>
+                    </thead>
+                    <tbody>
+                    {foreach $reglist as $key=>$v}
+                    <tr>
+                        <td>{$v.nickname}</td>
+                        <td>{$v.get_count_sum+0}</td>
+                        <td>{$v.create_time}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+
+            </div>
+
+
+        </div>
+
+    </div>
+    <div class="am-u-md-6 aman-h12">
+        <div class="aman-box aman-s-h8 ">
+            <h2 class="title" style="font-size: 20px;">声明</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body   aman-scorll">
+                {$sysinfo.declare|raw}
+            </div>
+
+
+        </div>
+
+        <div class="am-u-md-8 aman-s-h4" style="padding-left: 0px">
+
+            <div class="aman-box aman-s-h12">
+                <h2 class="title">解题记录</h2>
+                <span class="top-left border-span"></span>
+                <span class="top-right border-span"></span>
+                <span class="bottom-left border-span"></span>
+                <span class="bottom-right border-span"></span>
+                <div class="aman-body">
+                    <table class="aman-table table-nowrap">
+                        <thead>
+                        <th>用户</th>
+                        <th>题目</th>
+                        <th width="80">分数</th>
+                        <th width="160">时间</th>
+                        </thead>
+                        <tbody>
+                        {foreach $solvelist as $key=>$v}
+                        <tr>
+                            <td>{$v.get_user.nickname}</td>
+                            <td>{$v.get_subject.title}</td>
+                            <td>{$v.get_subject.value+0}</td>
+                            <td>{$v.create_time}</td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+
+                </div>
+
+
+            </div>
+        </div>
+        <div class="am-u-md-4 aman-s-h4" style="padding-right: 6px">
+
+            <div class="aman-box aman-s-h12">
+                <h2 class="title">题目类型</h2>
+                <span class="top-left border-span"></span>
+                <span class="top-right border-span"></span>
+                <span class="bottom-left border-span"></span>
+                <span class="bottom-right border-span"></span>
+                <div class="aman-body" id="type_chart">
+
+
+                </div>
+
+
+            </div>
+        </div>
+    </div>
+
+    <div class="am-u-md-3 aman-h12">
+        <div class="aman-box aman-s-h6">
+            <h2 class="title">公告</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body aman-scorll">
+                <ul class="notice-list">
+                    {foreach $notices as $key=>$v}
+                    <li>
+                        <a style="color: #fff" href="/notice/info?id={$v.id}">
+                            <span  style="float:left;white-space: nowrap;overflow: hidden;
+text-overflow: ellipsis;width: calc(100% - 140px)">{if $v.type=='1'} {$v.content|raw}{else /} {$v.title}{/if}</span>
+                            <span class="time">{$v.create_time}</span>
+                        </a>
+                    </li>
+
+                    {/foreach}
+                </ul>
+                <p style="text-align: center;padding-top: 20px;clear: both"> <a href="/notice" class="aman-btn am-btn am-btn-xs">　　更多　　</a> </p>
+            </div>
+
+
+        </div>
+
+
+        <div class="aman-box aman-s-h6">
+            <h2 class="title">最新留言</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body">
+                <ul class="new-msg">
+                    {foreach $guestbook as $key=>$v}
+                    <li>
+                        <p style="padding: 0;margin: 0;">
+                            {if $v.type=='1'}
+                            <span class="text-error">{$v.get_admin.nickname}</span>
+                            {else /}
+                            <span class="text-default">{$v.get_user.nickname}</span>
+                            {/if}
+
+                            <span class="fr" style="font-size: 12px;">{$v.create_time}</span>
+                        </p>
+                        {if $v.reply!=0}
+                            <span class="text-default">
+                            {if $v.who!='1'}
+                            @{$v.get_user.nickname}
+                            {else/}
+                            @{$v.get_admin.nickname}
+                            {/if}
+                            </span>
+                        {/if}
+                        {$v.content|raw|htmlspecialchars|nl2br}
+                    </li>
+                    {/foreach}
+                </ul>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+
+
+</body>
+<!----foot结束---->
+{include file="public/js"}
+<script src="/static/home/js/echarts.min.js"></script>
+{include file="public/foot"}
+
+<script>
+
+    var dom = document.getElementById("type_chart");
+    var myChart = echarts.init(dom);
+    var title=[],data=[];
+    {foreach $CountType as $key=>$v}
+    title.push('{$v.name}');
+    data.push({name:'{$v.name}',value:{$v.subject_count+1},itemStyle:{normal:{color:"{$v.color}"}}});
+    {/foreach}
+    option = null;
+    option = {
+
+        legend: {
+            x: 'center',
+            y: 'bottom',
+            itemWidth: 4,
+            itemHeight: 4,
+            textStyle: {
+                color: '#fff',
+                fontSize: 12
+            },
+            data: title
+        },
+        calculable: true,
+        series: [
+            {
+                name: '面积模式',
+                type: 'pie',
+                radius: [20, 80],
+                center: ['50%', '40%'],
+                roseType: 'area',
+                data: data
+            }
+        ]
+    };
+    ;
+    if (option && typeof option === "object") {
+        myChart.setOption(option, true);
+    }
+
+</script>
+
+</html>

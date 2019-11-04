@@ -1,0 +1,259 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+
+<div class="body">
+    <div class="aman-h12" style="width: 1000px;margin: auto;">
+
+        <div class="user-bg">
+            <p class="title">个人资料</p>
+
+
+            <div class="user-info">
+
+                <ul class="info-bg">
+                    <li>
+                        <p class="title">昵称</p>
+                        <p id="nickname" data-nickname="{$user.nickname}" style="cursor: pointer" class="text">
+                            {$user.nickname} </p>
+                    </li>
+                    <li>
+                        <p class="title">排名</p>
+                        <p class="text">{:getUserSort($user.id)}</p>
+                    </li>
+                    <li>
+                        <p class="title">积分</p>
+                        <p class="text">{$user.get_count_sum+0}</p>
+                    </li>
+                </ul>
+
+                <ul class="info-left">
+                    {foreach $typelist as $key=>$v}
+                    <li>
+                        <p class="title">{$v.subject_count>0?($v.use/$v.subject_count*100.0):'100'}%</p>
+                        <div class="bk">
+                            <div class="bg"
+                                 style="height:{$v.subject_count>0?($v.use/$v.subject_count*100.0):'100'}%;"></div>
+                            <div class="h"></div>
+                        </div>
+                        <p class="title2">{$v.name}</p>
+                    </li>
+                    {/foreach}
+
+                </ul>
+
+                <div class="user-img-border2"></div>
+                <div class="user-img-border3 aman-round"></div>
+                <div class="user-img-border1 "></div>
+                <img class="user-img"  src="{$user.cover}" onerror="this.src='/heads/hover.png'"
+                     alt="">
+                <p class="sign">
+                    <marquee data-am-popover="{content: '双击修改', trigger: 'hover focus'}" behavior="alternate"
+                             scrolldelay="200">
+                        {$user.sign==''?'这个人很懒，毛都没留一根':$user.sign}
+                    </marquee>
+                </p>
+
+
+            </div>
+            <div class="aman-box foot" style="background: rgba(0,0,0,0)">
+                <span class="top-left border-span"></span>
+                <span class="top-right border-span"></span>
+                <span class="bottom-left border-span"></span>
+                <span class="bottom-right border-span"></span>
+                <div id="echarts_score" style="width: 100%;height: 100%">
+
+                </div>
+
+            </div>
+        </div>
+
+        <div class="aman-box" style="height: auto;width: 100%;margin-top: 40px;background: rgba(0,255,255,0.03);">
+            <h2 class="title">解题记录</h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+
+            <div class="aman-body">
+                <p style="line-height: 1em;color:#0ff"><span
+                        style="float:left;height: 20px;width: 20px; background: rgba(255,0,0,.6);margin-right: 20px;"></span>一血
+                </p>
+                <table class="aman-table aman-table-bd">
+                    <thead style="border:1px solid rgba(0,255,255,0.04);">
+                    <tr>
+                        <th>题目</th>
+                        <th>类型</th>
+                        <th>积分</th>
+                        <th>银币</th>
+                        <th>解题时间</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {foreach $list as $key=>$v}
+                    <tr {$v.first=='1'?'class="text-error"':''}>
+                        <td>{$v.get_subject.title}</td>
+                        <td>{:getTypeByID($v.get_subject.type_id)['name']}</td>
+                        <td>{$v.get_subject.value}PT</td>
+                        <td>{$v.coin}</td>
+                        <td>{:date('Y-m-d H:i:s',$v.end_time)}</td>
+
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+                <p></p>
+            </div>
+
+        </div>
+
+    </div>
+</div>
+
+<!----foot结束---->
+{include file="public/js"}
+<script src="/static/home/js/echarts.min.js"></script>
+<script src="/static/home/js/aman.js?v=1.2"></script>
+
+<script>
+    var value = [], date = [];
+    {foreach $log as $key=>$v}
+    value.push({$v.num});
+    date.push("{$v.days}");
+    {/foreach}
+        echarts_score();
+
+        function echarts_score() {
+            // 基于准备好的dom，初始化echarts实例
+            var myChart = echarts.init(document.getElementById('echarts_score'));
+
+            option = {
+
+                tooltip: {
+                    trigger: 'axis'
+                },
+                legend: {
+                    orient: 'vertical',
+                    data: ['解题统计']
+                },
+                grid: {
+                    left: '3%',
+                    right: '3%',
+                    top: '8%',
+                    bottom: '5%',
+                    containLabel: true
+                },
+                color: ['#00ffff', '#00ffff'],
+                toolbox: {
+                    show: false,
+                    feature: {
+                        mark: {show: true},
+                        dataView: {show: true, readOnly: false},
+                        magicType: {show: true, type: ['line', 'bar', 'stack', 'tiled']},
+                        restore: {show: true},
+                        saveAsImage: {show: true}
+                    }
+                },
+
+                calculable: true,
+                xAxis: [
+                    {
+                        type: 'category',
+
+                        axisTick: {show: false},
+
+                        boundaryGap: false,
+                        axisLabel: {
+                            textStyle: {
+                                color: '#0ff',
+                                fontSize: '12'
+                            },
+                            lineStyle: {
+                                color: '#0ff',
+                            },
+                            interval: { default: 0},
+                            rotate: 0,
+                            formatter: function (params) {
+                                var newParamsName = "";// 最终拼接成的字符串
+                                var paramsNameNumber = params.length;// 实际标签的个数
+                                var provideNumber = 5;// 每行能显示的字的个数
+                                var rowNumber = Math.ceil(paramsNameNumber / provideNumber);// 换行的话，需要显示几行，向上取整
+                                /**
+                                 * 判断标签的个数是否大于规定的个数， 如果大于，则进行换行处理 如果不大于，即等于或小于，就返回原标签
+                                 */
+                                // 条件等同于rowNumber>1
+                                if (paramsNameNumber > provideNumber) {
+                                    /** 循环每一行,p表示行 */
+                                    var tempStr = "";
+                                    tempStr = params.substring(0, 4);
+                                    newParamsName = tempStr + "...";// 最终拼成的字符串
+                                } else {
+                                    // 将旧标签的值赋给新标签
+                                    newParamsName = params;
+                                }
+                                //将最终的字符串返回
+                                return newParamsName
+                            }
+
+                        },
+                        data: date
+                    }
+                ],
+                yAxis: {
+
+                    type: 'value',
+                    axisLabel: {
+                        textStyle: {
+                            color: '#0ff',
+                            fontSize: '12',
+                        }
+                    },
+                    axisLine: {
+                        lineStyle: {
+                            color: 'rgba(160,160,160,0.3)',
+                        }
+                    },
+                    splitLine: {
+                        lineStyle: {
+                            color: 'rgba(160,160,160,0.3)',
+                        }
+                    },
+
+                }
+                ,
+                series: [
+                    {
+                        type: 'line',
+                        areaStyle: {
+
+                            normal: {
+                                type: 'default',
+                                color: new echarts.graphic.LinearGradient(0, 0, 0, 0.8, [{
+                                    offset: 0,
+                                    color: 'rgba(0,255,255,.8)'
+                                }, {
+                                    offset: 1,
+                                    color: 'rgba(0,255,255,0.5)'
+                                }], false)
+                            }
+                        },
+                        smooth: true,
+                        itemStyle: {
+                            normal: {areaStyle: {type: 'default'}}
+                        },
+                        data: value
+                    }
+                ]
+            };
+
+            // 使用刚指定的配置项和数据显示图表。
+            myChart.setOption(option);
+            window.addEventListener("resize", function () {
+                myChart.resize();
+            });
+        }
+</script>
+{include file="public/foot"}
+</html>

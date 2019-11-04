@@ -1,0 +1,106 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+
+<div class="body">
+
+
+    <div class="aman-h12 am-g" style="width: 1200px;margin: auto;">
+        <div class="am-tabs" data-am-tabs>
+            <ul class="am-tabs-nav am-nav am-nav-tabs" style="margin: 0 27px;">
+                {foreach $typelist as $key=>$v}
+                <li class="{$key==0?'am-active':''}"><a href="#tab{$v.id}">{$v.name}</a></li>
+                {/foreach}
+            </ul>
+
+            <div class="am-tabs-bd " style="border: none;">
+                {foreach $typelist as $key=>$v}
+                <div class="am-tab-panel {$key==0?'am-active':''} " id="tab{$v.id}">
+                    {foreach $v.list as $key2=>$item}
+                    <div data-id="{$item.id}" class="am-u-lg-3 am-u-md-6 am-u-sm-6 challenge-item  {$item.isfinish!='' && $item.isfinish.end_time>1?'active':''}">
+
+                        <div class="aman-box">
+                            <p class="title">{$item.title}</p>
+                            <p class="rank">{$item.value}PT</p>
+                            <span class="top-left border-span"></span>
+                            <span class="top-right border-span"></span>
+                            <span class="bottom-left border-span"></span>
+                            <span class="bottom-right border-span"></span>
+                        </div>
+
+                    </div>
+                    {/foreach}
+
+                </div>
+                {/foreach}
+            </div>
+        </div>
+
+    </div>
+</div>
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+<script src="/static/home/js/aman.js"></script>
+<script>
+    $(function () {
+
+
+        $('.challenge-item').click(function () {
+            var id=$(this).attr('data-id');
+            $.ajax({
+                url:"/getSubject",
+                data:{id:id},
+                type:'post',
+                success:function (res) {
+                    if(res.code==1){
+                        showModel(res.data)
+                    }else{
+                        alert(res.msg);
+                    }
+                }
+            });
+        })
+
+
+    });
+
+    function showModel(data) {
+        $("body").append(data);
+        $(".aman-model-bk").find('.close').bind('click',function () {
+            $(this).parent().parent().remove();
+        });
+        $(".aman-model-bk").find('#submit').bind('click',function () {
+            var flag=$(".aman-model-bk").find("#flag").val();
+            var id=$(this).attr('data-id');
+            if(flag==''){
+                hint($(".aman-model-bk").find('.hint'),"warning","请输入FLAG");
+                return ;
+            }
+            $.ajax({
+                url:"/submitFlag",
+                data:{id:id,flag:flag},
+                type:'post',
+                success:function (res) {
+                    if(res.code==1){
+                        hint($(".aman-model-bk").find('.hint'),"success",res.msg);
+                    }else{
+                        if(res.data!="-1"){
+                            hint($(".aman-model-bk").find('.hint'),"warning",res.msg);
+                        }else{
+                            hint($(".aman-model-bk").find('.hint'),"error",res.msg);
+                        }
+                    }
+                }
+            });
+
+        });
+    }
+
+</script>
+{include file="public/foot"}
+</html>

@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body>
+<div class="x-nav">
+    <span class="layui-breadcrumb">
+        <a href="">首页</a>
+        <a href="">系统设置</a>
+        <a> <cite>网站设置</cite></a>
+    </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i>
+    </a>
+</div>
+
+
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+                        <ul class="layui-tab-title">
+                            <li class="layui-this">网站设置</li>
+                            <li>后台设置</li>
+                            <li>其他设置</li>
+                        </ul>
+                        <div class="layui-tab-content">
+                            <div class="layui-tab-item layui-show">
+                                <form class="layui-form">
+                                    <div class="layui-form-item">
+                                        <label for="name" class="layui-form-label">网站标题</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="name" name="name" value="{$sysinfo.webtitle}"
+                                                   required="" lay-verify="required"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label for="title" class="layui-form-label">网站名字</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="title" name="title" value="{$sysinfo.title}"
+                                                   required="" lay-verify="required"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label for="logo" class="layui-form-label">Logo</label>
+                                        <div class="layui-input-block">
+                                            <div class="layui-upload">
+                                                <button type="button" class="layui-btn" id="logo">上传图片</button>
+                                                <div class="layui-upload-list">
+                                                    <img class="layui-upload-img" id="demo1" src="{$sysinfo.logo}">
+                                                    <p id="demoText"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label for="keyword" class="layui-form-label">关键字</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="keyword" name="keyword" value="{$sysinfo.keyword}"
+                                                   required="" lay-verify="required"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label for="desc" class="layui-form-label">网站描述</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="desc" name="desc" value="{$sysinfo.desc}" required=""
+                                                   lay-verify="required"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label for="icp" class="layui-form-label">ICP备案</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="icp" name="icp" value="{$sysinfo.icp}" required=""
+                                                   lay-verify="required"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label for="foot" class="layui-form-label">底部信息</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="foot" name="foot"
+                                                      class="layui-textarea ">{$sysinfo.foot|raw}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label for="declare" class="layui-form-label">声明</label>
+                                        <div class="layui-input-block">
+                                            <textarea id="declare" name="declare" class="layui-textarea ">{$sysinfo.declare|raw}</textarea>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"></label>
+                                        <button class="layui-btn" lay-filter="save" lay-submit="submit">
+                                            确定
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+
+                            <div class="layui-tab-item">
+                                <form class="layui-form">
+                                    <div class="layui-form-item">
+                                        <label for="theme" class="layui-form-label">后台风格</label>
+                                        <div class="layui-input-inline">
+                                            <select name="theme" id="theme">
+                                                <option value="0" {$sysinfo.theme=='0'?'selected':''}>默认风格</option>
+                                                <option value="1" {$sysinfo.theme=='1'?'selected':''}>风格1</option>
+                                                <option value="2" {$sysinfo.theme=='2'?'selected':''}>风格2</option>
+                                                <option value="3" {$sysinfo.theme=='3'?'selected':''}>风格3</option>
+                                                <option value="4" {$sysinfo.theme=='4'?'selected':''}>风格4</option>
+                                                <option value="5" {$sysinfo.theme=='5'?'selected':''}>风格5</option>
+                                                <option value="10" {$sysinfo.theme=='10'?'selected':''}>风格6</option>
+                                            </select>
+                                        </div>
+                                    </div>
+
+
+                                    <div class="layui-form-item">
+                                        <label for="remember" class="layui-form-label">记忆功能</label>
+                                        <div class="layui-input-block">
+                                            <input type="radio" name="remember" value="0" title="关闭"
+                                                   {$sysinfo.remember=='0'?'checked':''}>
+                                            <input type="radio" name="remember" value="1" title="开启"
+                                                   {$sysinfo.remember=='1'?'checked':''}>
+                                        </div>
+                                    </div>
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"></label>
+                                        <button class="layui-btn" lay-filter="save" lay-submit="submit">
+                                            确定
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="layui-tab-item">
+                                <form class="layui-form">
+
+                                    <div class="layui-form-item">
+                                        <label for="email" class="layui-form-label">邮件激活</label>
+                                        <div class="layui-input-block">
+                                            <input type="radio" name="email" value="0" title="关闭"
+                                                   {$sysinfo.email=='0'?'checked':''}>
+                                            <input type="radio" name="email" value="1" title="开启"
+                                                   {$sysinfo.email=='1'?'checked':''}>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label for="email_username" class="layui-form-label">账号</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="email_username" name="email_username" value="{$sysinfo.email_username}"
+                                                   required="" lay-verify="required"
+                                                   autocomplete="off" class="layui-input" style="padding-right: 80px;">
+                                            <button style="position: absolute;top: 0;right: 0px;
+    cursor: pointer;" onclick="test()" type="button" class="layui-btn">测试</button>
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label for="email_password" class="layui-form-label">密码</label>
+                                        <div class="layui-input-block">
+                                            <input type="text" id="email_password" name="email_password" value="{$sysinfo.email_password}"
+                                                   required="" lay-verify="required"
+                                                   autocomplete="off" class="layui-input">
+                                        </div>
+                                    </div>
+
+                                    <div class="layui-form-item">
+                                        <label class="layui-form-label"></label>
+                                        <button class="layui-btn" lay-filter="save" lay-submit="submit">
+                                            确定
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script>
+    function test(){
+        layer.prompt({title: '输入收件地址', formType: 0}, function(text, index){
+            $.post({
+                url:'/amanmin/api/testemail',
+                data:{email:text},
+                success:function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg);
+                        layer.close(index)
+                    } else {
+                        layer.msg(res.msg, {
+                            anim:6,
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+
+                }
+            });
+        });
+    }
+    layui.use(['form', 'upload', 'jquery'],
+        function () {
+
+            var form = layui.form, $ = layui.jquery
+                , upload = layui.upload;
+            upload.render({
+                elem: '#logo'
+                , url: '/amanmin/api/uploadlogo'
+                , before: function (obj) {
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        $('#demo1').attr('src', result); //图片链接（base64）
+                    });
+                }
+                , done: function (res) {
+                    //如果上传失败
+                    return layer.msg(res.msg);
+                    /*if(res.code == 1){
+                        return layer.msg('上传失败');
+                    }else{
+
+                    }*/
+                    //上传成功
+                }
+            });
+
+            form.on('submit(save)',
+                function (data) {
+                    var post = data.field;
+                    $.post({
+                        url: '/amanmin/sys/save',
+                        data: post,
+                        success(data) {
+                            if (data.code == 1) {
+                                layer.msg(data.msg, {time: 1000}, function () {
+                                    location.reload();
+                                });
+                            } else {
+                                layer.msg(data.msg, {
+                                    anim: 6,
+                                    icon: 5,
+                                    time: 2000
+                                });
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+
+
+        });
+
+
+</script>
+{include file="public/foot"}
+</html>

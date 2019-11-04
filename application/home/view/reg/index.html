@@ -1,0 +1,58 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body class="body-login">
+
+<div class="aman-reg">
+    <div class="aman-login-content">
+        <form class="aman-login-form">
+            <h2>Sign Up</h2>
+
+            <input id="username" type="text" name="username" placeholder="请输入账号">
+            <input id="email" type="text" name="email" placeholder="请输入邮箱">
+            <input id="password" type="password" name="password" placeholder="请输入密码">
+            <input id="repassword" type="password" name="repassword" placeholder="请再次输入密码">
+            <a href="/login" style="float: left;margin-left:150px;margin-top: 20px;">返回登录</a>
+            <button id="regbtn" style="float: right;margin-right:150px;" id="loginbtn">注册</button>
+            <p id="hint" class="hint error" style="display: none;width: 300px;margin: auto;margin-bottom: 0;margin-top: 90px;"></p>
+
+        </form>
+    </div>
+</div>
+
+
+
+</body>
+{include file="public/js"}
+<script src="/static/home/js/aman.js"></script>
+<script>
+    $(function(){
+        $("#regbtn").click(function(){
+            $(this).attr('disabled',true);
+            $(this).html("Loading");
+            $.ajax({
+                url:'/reg',
+                type:"POST",
+                data:$("form").serialize(),
+                dataType:"json",
+                success:function(data){
+                    $("#regbtn").attr('disabled',false);
+                    $("#regbtn").html("注册");
+                    if(data.code==1){
+                        if(data.data=='2'){
+                            hint($("#hint"),'warning',data.msg);
+                        }else{
+                            hint($("#hint"),'success',data.msg);
+                        }
+                    }else{
+                        hint($("#hint"),'error',data.msg);
+                    }
+                }
+            })
+            return false;
+        });
+    });
+
+</script>
+{include file="public/foot"}
+</html>

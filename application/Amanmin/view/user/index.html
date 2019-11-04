@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a>
+              <cite>用户管理</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right"
+       onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    用户列表
+                </div>
+                <div class="layui-card-body ">
+                    <form class="layui-form layui-col-space5">
+                        <label>排序</label>
+                        <div class="layui-input-inline layui-show-xs-block">
+
+                            <select name="order">
+                                <option value="">默认</option>
+                                <option value="val"  {:input('order')=='val'?'selected':""}>积分</option>
+                                <option value="reg" {:input('order')=='reg'?'selected':""}>注册时间</option>
+                                <option value="login" {:input('order')=='login'?'selected':""}>登录时间</option>
+                                <option value="coin" {:input('order')=='coin'?'selected':""}>银币</option>
+                            </select>
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <input type="text" name="keyword" value="{:input('keyword')}" placeholder="请输入关键字查询"
+                                   class="layui-input">
+                        </div>
+                        <div class="layui-inline layui-show-xs-block">
+                            <button class="layui-btn" lay-submit="" lay-filter="search"><i
+                                    class="layui-icon">&#xe615;</i></button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="layui-card-body  aman-table-scroll">
+                    <table class="layui-table layui-form">
+                        <thead>
+                            <th>ID</th>
+                            <th>账号</th>
+                            <th>昵称</th>
+                            <th>邮箱</th>
+                            <th>积分</th>
+                            <th>银币</th>
+                            <th>登录时间</th>
+                            <th>状态</th>
+                            <th>注册时间</th>
+                            <th>IP</th>
+                            <th>操作</th>
+                        </thead>
+                        <tbody>
+                            {foreach $list as $key=>$v}
+                            <tr>
+                                <td>{$key+1}</td>
+                                <td>{$v.username}</td>
+                                <td>{$v.nickname}</td>
+                                <td>{$v.email}</td>
+                                <td>{$v.get_count_sum}</td>
+                                <td>{$v.coin}</td>
+                                <td>{$v.update_time}</td>
+                                <td class="td-status">
+                                    {if  $v.status==1}
+                                        {if isOnline($v.update_time)}
+                                        <span class="layui-badge layui-bg-green">在线</span>
+                                        {else /}
+                                        <span class="layui-badge layui-bg-orange">离线</span>
+                                        {/if}
+                                    {elseif $v.status==0 /}
+                                        <span class="layui-badge layui-bg-gray">未激活</span>
+                                    {else /}
+                                        <span class="layui-badge layui-bg-black">禁用</span>
+                                    {/if}
+                                </td>
+                                <td>{$v.create_time}</td>
+                                <td>{$v.update_ip}</td>
+                                <td class="td-manage">
+                                    <button class="layui-btn layui-btn-normal layui-btn-xs"
+                                            onclick="xadmin.open('详情','/amanmin/user/info?id={$v.id}','840','700')"><i class="layui-icon">&#xe615;</i>详情
+                                    </button>
+                                    {if $v.status==1}
+                                    <button class="layui-btn layui-btn-xs" status="1" onclick="member_stop(this,{$v.id})">
+                                        <i class="layui-icon"></i>停用
+                                    </button>
+                                    {elseif $v.status==-1 /}
+                                    <button class="layui-btn layui-btn-warm layui-btn-xs" status="0" onclick="member_stop(this,{$v.id})">
+                                        <i class="layui-icon"></i>启用
+                                    </button>
+                                    {else /}
+                                    <button class="layui-btn  layui-btn-xs disabled" status="0" onclick="member_stop(this,{$v.id})">
+                                        <i class="layui-icon"></i>激活
+                                    </button>
+                                    {/if}
+                                    <button class="layui-btn layui-btn-danger layui-btn-xs"
+                                            onclick="del(this,{$v.id})"><i class="layui-icon"></i>删除
+                                    </button>
+                                </td>
+                            </tr>
+                            {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    <div class="page">
+                        {$page|raw}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+<script>
+    layui.use([ 'form'], function () {
+        var form = layui.form;
+        form.on('submit(search)',function (data) {
+            var url='/amanmin/user/index'
+            if(data.field.order!=''){
+                url+='/order/'+data.field.order;
+            }
+            if(data.field.keyword!=''){
+                url+='/keyword/'+data.field.keyword;
+            }
+            location.href=url;
+            return false;
+        })
+
+
+    });
+
+    /*用户-停用*/
+    function member_stop(obj, id) {
+        layer.confirm('确认要启用/停用吗？', function (index) {
+            $.post({
+                url:'/amanmin/user/stop',
+                data:{id:id},
+                success:function (res) {
+                    if(res.code==1){
+                        layer.msg(res.msg, {time: 1000},function () {
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {
+                            anim:6,
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+
+        });
+    }
+
+    /*用户-删除*/
+    function del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            $.post({
+                url:'/amanmin/user/del',
+                data:{id:id},
+                success:function (res) {
+                    if(res.code==1){
+                        layer.msg(res.msg, {time: 1000},function () {
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {
+                            anim:6,
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+        });
+    }
+
+</script>
+{include file="public/foot"}
+</html>

@@ -1,0 +1,31 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+
+<div class="body">
+    <div class="aman-h12" style="width: 1000px;margin: auto;">
+        <div class="aman-box" style="height: auto;min-height: 100%" >
+            <h2 class="title">{$v.title} </h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <div class="aman-body" style="">
+                {$v.content|raw}
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+
+{include file="public/foot"}
+</html>

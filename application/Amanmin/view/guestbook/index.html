@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body>
+<div class="x-nav">
+          <span class="layui-breadcrumb">
+            <a href="">首页</a>
+            <a>
+              <cite>留言板</cite></a>
+          </span>
+    <a class="layui-btn layui-btn-small" style="line-height:1.6em;margin-top:3px;float:right" onclick="location.reload()" title="刷新">
+        <i class="layui-icon layui-icon-refresh" style="line-height:30px"></i></a>
+</div>
+<div class="layui-fluid">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-header">
+                    留言列表
+                </div>
+
+                <div class="layui-card-body  aman-table-scroll">
+                    <table class="layui-table layui-form">
+                        <thead>
+                        <th>内容</th>
+                        <th>留言用户</th>
+                        <th>点赞</th>
+                        <th>留言时间</th>
+                        <th>IP</th>
+                        <th>操作</th>
+                        </thead>
+                        <tbody class="aman-a">
+                        {foreach $list as $key=>$v}
+                        <tr>
+                            <td>
+                                <p style="width:200px!important;white-space:normal">
+                                    {if $v.reply!=''}
+                                    <a href="">@{$v.who=='1'?$v.getreply2.nickname:$v.getreply.nickname}：</a>
+                                    {/if}
+                                    {$v.content}
+                                </p>
+                            </td>
+                            <td>
+                                {if $v.type=='1'}
+                                <a href="">{$v.getadmin.nickname}</a>
+                                {else /}
+                                {$v.getuser.nickname}
+                                {/if}
+                            </td>
+                            <td>{$v.getclick_count}</td>
+                            <td>{$v.create_time}</td>
+                            <td>{$v.ip}</td>
+                            <td class="td-manage">
+                                <button class="layui-btn layui-btn-normal layui-btn-xs" onclick="reply({$v.id})"><i class="layui-icon">&#xe615;</i>回复
+                                </button>
+                                <button class="layui-btn layui-btn-danger layui-btn-xs" onclick="del(this,{$v.id})" ><i class="layui-icon"></i>删除
+                                </button>
+                            </td>
+                        </tr>
+                        {/foreach}
+                        </tbody>
+                    </table>
+                </div>
+                <div class="layui-card-body ">
+                    <div class="page">
+                       {$page|raw}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+    function reply(id){
+        layer.prompt({title: '输入内容', formType: 2}, function(text, index){
+            $.post({
+                url:'/amanmin/guestbook/reply',
+                data:{id:id,content:text},
+                success:function (res) {
+                    if (res.code == 1) {
+                        layer.msg(res.msg,{time:1000},function () {
+                            location.reload()
+                        });
+                        layer.close(index)
+                    } else {
+                        layer.msg(res.msg, {
+                            anim:6,
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+
+                }
+            });
+        });
+    }
+
+    function del(obj, id) {
+        layer.confirm('确认要删除吗？', function (index) {
+            $.post({
+                url:'/amanmin/guestbook/del',
+                data:{id:id},
+                success:function (res) {
+                    if(res.code==1){
+                        layer.msg(res.msg, {time: 1000},function () {
+                            location.reload();
+                        });
+                    }else{
+                        layer.msg(res.msg, {
+                            anim:6,
+                            icon: 5,
+                            time: 2000
+                        });
+                    }
+                }
+            })
+        });
+    }
+</script>
+{include file="public/foot"}
+</html>

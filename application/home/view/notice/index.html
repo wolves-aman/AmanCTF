@@ -1,0 +1,56 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+
+<div class="body">
+    <div class="aman-h12" style="width: 1000px;margin: auto;">
+        <div class="aman-box" style="height: auto;min-height: 100%" >
+            <h2 class="title">公告 </h2>
+            <span class="top-left border-span"></span>
+            <span class="top-right border-span"></span>
+            <span class="bottom-left border-span"></span>
+            <span class="bottom-right border-span"></span>
+            <style>
+                table tr{
+                    line-height: 50px;
+                    border-bottom: 1px solid rgba(0,0,0,1);
+                    box-shadow: 0 1px 0 rgba(255,255,255,.3);
+
+                }
+                table tr td, table tr th{
+                    padding-left: 20px;
+                }
+
+            </style>
+            <div class="aman-body">
+                <table class="aman-table">
+                    <thead>
+                    <th style="text-align: left">标题</th>
+                    <th width="200">时间</th>
+                    </thead>
+                    <tbody>
+                    {foreach $notices as $key=>$v}
+                    <tr >
+                        <td  style="text-align: left"><a style="color: #fff" href="/notice/info?id={$v.id}">{$v.title}</a></td>
+                        <td>{$v.create_time}</td>
+                    </tr>
+                    {/foreach}
+                    </tbody>
+                </table>
+            </div>
+
+        </div>
+    </div>
+
+
+</div>
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+
+{include file="public/foot"}
+</html>

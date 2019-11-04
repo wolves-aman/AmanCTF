@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body style="background: #fff;">
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" style="padding-right: 50px;">
+            <div class="layui-form-item">
+                <label for="title" class="layui-form-label"> <span class="x-red">*</span>标题</label>
+                <div class="layui-input-block">
+                    <input type="text" id="title" name="title" ay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <label for="url" class="layui-form-label"> <span class="x-red">*</span>链接</label>
+                <div class="layui-input-block">
+                    <input type="text" id="url" name="url"  lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <label for="logo" class="layui-form-label">图标</label>
+                <div class="layui-input-block">
+                    <input type="text" id="logo" name="logo"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="order" class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input type="number" id="order" name="order" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="checkurl" class="layui-form-label">检测链接</label>
+                <div class="layui-input-block">
+                    <input type="text" id="checkurl" name="checkurl"  autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <button class="layui-btn fr" lay-filter="add" lay-submit="">增加</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+        //监听提交
+        form.on('submit(add)',
+            function (data) {
+                $.post({
+                    url:'/amanmin/links/add',
+                    data:data.field,
+                    success:function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg,{time:1000},function () {
+                                xadmin.father_reload();
+                            });
+                            layer.close(index)
+                        } else {
+                            layer.msg(res.msg, {
+                                anim:6,
+                                icon: 5,
+                                time: 2000
+                            });
+                        }
+
+                    }
+                });
+                return false;
+            });
+
+    });
+</script>
+
+{include file="public/foot"}
+</body>
+</html>

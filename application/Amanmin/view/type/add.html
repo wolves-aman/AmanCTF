@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+
+<body style="background: #fff;">
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" style="padding-right: 50px;padding-top: 30px;">
+            <div class="layui-form-item">
+                <label for="name" class="layui-form-label"> <span class="x-red">*</span>标题</label>
+                <div class="layui-input-block">
+                    <input type="hidden" name="type" value="{:input('type')??'1'}"  class="layui-input">
+                    <input type="text" id="name" name="name" required="" lay-verify="required" class="layui-input">
+                </div>
+            </div>
+
+            <div class="layui-form-item" >
+                <label for="order" class="layui-form-label">排序</label>
+                <div class="layui-input-block">
+                    <input type="number" id="order" name="order"   value="0" class="layui-input">
+                </div>
+            </div>
+
+
+            <div class="layui-form-item">
+                <button class="layui-btn fr" lay-filter="add" lay-submit="">增加</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form','upload', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form;
+        //监听提交
+        form.on('submit(add)',
+            function(data) {
+                $.post({
+                    url:'/amanmin/type/add',
+                    data:data.field,
+                    success:function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg,{time:1000},function () {
+                                xadmin.father_reload();
+                            });
+                            layer.close(index)
+                        } else {
+                            layer.msg(res.msg, {
+                                anim:6,
+                                icon: 5,
+                                time: 2000
+                            });
+                        }
+
+                    }
+                });
+                return false;
+            });
+
+    });
+
+
+
+</script>
+{include file="public/foot"}
+</body>
+</html>

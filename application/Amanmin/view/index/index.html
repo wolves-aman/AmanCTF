@@ -1,0 +1,210 @@
+<!doctype html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body class="index">
+<!-- 顶部开始 -->
+<div class="container">
+    <div class="logo">
+        <a href="./index.html">X-admin v2.2</a></div>
+    <div class="left_open">
+        <a><i title="展开左侧栏" class="iconfont">&#xe699;</i></a>
+    </div>
+    <!--<ul class="layui-nav left fast-add" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">+新增</a>
+            <dl class="layui-nav-child">
+                &lt;!&ndash; 二级菜单 &ndash;&gt;
+                <dd>
+                    <a onclick="xadmin.open('最大化','http://www.baidu.com','','',true)">
+                        <i class="iconfont">&#xe6a2;</i>弹出最大化</a></dd>
+                <dd>
+                    <a onclick="xadmin.open('弹出自动宽高','http://www.baidu.com')">
+                        <i class="iconfont">&#xe6a8;</i>弹出自动宽高</a></dd>
+                <dd>
+                    <a onclick="xadmin.open('弹出指定宽高','http://www.baidu.com',500,300)">
+                        <i class="iconfont">&#xe6a8;</i>弹出指定宽高</a></dd>
+                <dd>
+                    <a onclick="xadmin.add_tab('在tab打开','member-list.html')">
+                        <i class="iconfont">&#xe6b8;</i>在tab打开</a></dd>
+                <dd>
+                    <a onclick="xadmin.add_tab('在tab打开刷新','member-del.html',true)">
+                        <i class="iconfont">&#xe6b8;</i>在tab打开刷新</a></dd>
+            </dl>
+        </li>
+    </ul>-->
+    <ul class="layui-nav right" lay-filter="">
+        <li class="layui-nav-item">
+            <a href="javascript:;">{:session('admin.nickname')}</a>
+            <dl class="layui-nav-child">
+                <!-- 二级菜单 -->
+                <dd>
+                    <a onclick="xadmin.open('个人信息','/amanmin/info')">个人信息</a></dd>
+
+                <dd>
+                    <a href="/amanmin/logout.html">退出</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item to-index">
+            <a href="/" target="_blank">前台首页</a></li>
+    </ul>
+</div>
+<!-- 顶部结束 -->
+<!-- 中部开始 -->
+<!-- 左侧菜单开始 -->
+<div class="left-nav">
+    <div id="side-nav">
+        <ul id="nav">
+            <li>
+                <a onclick="xadmin.add_tab('用户列表','/amanmin/user')">
+                    <i class="iconfont left-nav-li" lay-tips="用户管理">&#xe6b8;</i>
+                    <cite>用户管理</cite></a>
+
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="分类管理">&#xe6c5;</i>
+                    <cite>分类管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('CTF分类','/amanmin/type/ctf')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>CTF分类</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('下载资源分类','/amanmin/type/down')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>下载资源分类</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('在线工具分类','/amanmin/type/tools')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>在线工具分类</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;" onclick="xadmin.add_tab('题目管理','/amanmin/subject')">
+                    <i class="iconfont left-nav-li" lay-tips="题目管理">&#xe723;</i>
+                    <cite>题目管理</cite></a>
+
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="工具管理">&#xe6f4;</i>
+                    <cite>工具管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('资源库','/amanmin/soft')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>资源库</cite></a>
+                    </li>
+                    <li>
+                        <a onclick="xadmin.add_tab('在线工具','/amanmin/tools')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>在线工具</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="商城管理">&#xe722;</i>
+                    <cite>商城管理</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('商城管理','/amanmin/shop.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>商城管理</cite></a>
+                    </li>
+
+                </ul>
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('留言板','/amanmin/guestbook.html')" href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="留言板">&#xe69b;</i>
+                    <cite>留言板</cite>
+                </a>
+
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('公告管理','/amanmin/notice.html')" href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="公告管理">&#xe6bc;</i>
+                    <cite>公告管理</cite>
+                </a>
+
+            </li>
+            <li>
+                <a onclick="xadmin.add_tab('友情链接','/amanmin/links.html')" href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="友情链接">&#xe6f7;</i>
+                    <cite>友情链接</cite>
+                </a>
+
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="网站安全">&#xe71c;</i>
+                    <cite>网站安全</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('系统日志','/amanmin/syslog.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>系统日志</cite></a>
+                    </li>
+
+                    <li>
+                        <a onclick="xadmin.add_tab('安全警告','/amanmin/safelog.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>安全警告</cite></a>
+                    </li>
+                </ul>
+            </li>
+            <li>
+                <a href="javascript:;">
+                    <i class="iconfont left-nav-li" lay-tips="系统设置">&#xe6ae;</i>
+                    <cite>系统设置</cite>
+                    <i class="iconfont nav_right">&#xe697;</i></a>
+                <ul class="sub-menu">
+                    <li>
+                        <a onclick="xadmin.add_tab('网站设置','/amanmin/sys.html')">
+                            <i class="iconfont">&#xe6a7;</i>
+                            <cite>网站设置</cite></a>
+                    </li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</div>
+<!-- <div class="x-slide_left"></div> -->
+<!-- 左侧菜单结束 -->
+<!-- 右侧主体开始 -->
+<div class="page-content">
+    <div class="layui-tab tab" lay-filter="xbs_tab" lay-allowclose="false">
+        <ul class="layui-tab-title">
+            <li class="home">
+                <i class="layui-icon">&#xe68e;</i>我的桌面</li></ul>
+        <div class="layui-unselect layui-form-select layui-form-selected" id="tab_right">
+            <dl>
+                <dd data-type="this">关闭当前</dd>
+                <dd data-type="other">关闭其它</dd>
+                <dd data-type="all">关闭全部</dd></dl>
+        </div>
+        <div class="layui-tab-content">
+            <div class="layui-tab-item layui-show">
+                <iframe src='/amanmin/welcome.html' frameborder="0" scrolling="yes" class="x-iframe">
+                </iframe>
+            </div>
+        </div>
+        <div id="tab_show"></div>
+    </div>
+</div>
+<div class="page-content-bg"></div>
+<style id="theme_style"></style>
+<!-- 右侧主体结束 -->
+<!-- 中部结束 -->
+
+</body>
+
+</html>

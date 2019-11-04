@@ -1,0 +1,54 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+<style>
+    table td {
+        padding: 0 5px;
+        font-size: 14px;
+    }
+</style>
+<div class="body">
+
+
+    <div class="aman-h12 am-g" style="width: 1200px;margin: auto;">
+        <div class="aman-links-item" style="padding-left:17px;padding-right: 9px;">
+            <div class="aman-box">
+                <span class="top-left border-span"></span>
+                <span class="top-right border-span"></span>
+                <span class="bottom-left border-span"></span>
+                <span class="bottom-right border-span"></span>
+                <h2 class="title">友情链接</h2>
+            </div>
+
+
+        </div>
+        {foreach $list as $key=>$v}
+        <div class="am-u-lg-3 am-u-md-6 am-u-sm-6 aman-links-item">
+            <div class="aman-box">
+                <span class="top-left border-span"></span>
+                <span class="top-right border-span"></span>
+                <span class="bottom-left border-span"></span>
+                <span class="bottom-right border-span"></span>
+                <img style="background: #fff;border:1px solid #54dcf2;" src="{$v.logo==''?$v.url."/"."favicon.ico":$v.logo}" alt="">
+                <a target="_blank" href="{$v.url}">{$v.title}</a>
+            </div>
+
+        </div>
+        {/foreach}
+
+
+    </div>
+
+
+</div>
+
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+
+{include file="public/foot"}
+</html>

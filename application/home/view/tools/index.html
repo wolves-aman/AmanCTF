@@ -1,0 +1,51 @@
+<!doctype html>
+<html>
+{include file="public/head"}
+<body data-type="index">
+{include file="public/header"}
+
+<div class="body">
+    <div class="aman-h12 am-g" style="width: 1200px;margin: auto;">
+        <div class="am-tabs" data-am-tabs>
+            <ul class="am-tabs-nav am-nav am-nav-tabs" style="margin: 0 27px;">
+                {foreach $typelist as $key=>$v}
+                <li class="{$key==0?'am-active':''}"><a href="#tab{$v.id}">{$v.name}</a></li>
+                {/foreach}
+            </ul>
+            <div class="am-tabs-bd " style="border: none;">
+                {foreach $typelist as $key=>$v}
+                <div class="am-tab-panel  {$key==0?'am-active':''} " id="tab{$v.id}">
+                    {foreach $v.list as $key2=>$item}
+                    <div class="am-u-lg-3 am-u-md-6 am-u-sm-6 aman-tools-item">
+                        <div class="aman-box">
+                            <span class="top-left border-span"></span>
+                            <span class="top-right border-span"></span>
+                            <span class="bottom-left border-span"></span>
+                            <span class="bottom-right border-span"></span>
+                            <img src="{$item.img}" alt="">
+                            <div class="content">
+                                <p class="title">{$item.title} {if abs(strtotime($item.create_time)-time())<259200}<span
+                                        class="text-error">新</span>{/if}</p>
+                                <p class="text">[{$v.name}]</p>
+                            </div>
+                            <div class="foot"> {$item.des}
+                                <span class="url">{$item.footurl==''?request()->header()['host']:$item.footurl}</span>
+                                <a class="am-btn aman-btn am-btn-xs" target="_blank" href="{$item.url}">进入</a>
+                            </div>
+                        </div>
+                    </div>
+                    {/foreach}
+                </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+
+
+<!----foot结束---->
+{include file="public/js"}
+
+{include file="public/foot"}
+</html>

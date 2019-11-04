@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body style="background: #fff;">
+<div class="layui-fluid">
+    <div class="layui-row">
+        <form class="layui-form" enctype="multipart/form-data">
+            <div class="layui-form-item">
+                <label for="title" class="layui-form-label"> <span class="x-red">*</span>标题</label>
+                <div class="layui-input-block">
+                    <input type="text" id="title" name="title"  lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label  class="layui-form-label"> <span class="x-red">*</span>分类</label>
+                <div class="layui-input-block">
+                    <select name="type">
+                        {foreach $list as $key=>$v}
+                        <option value="{$v.id}">{$v.name}</option>
+                        {/foreach}
+                    </select>
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="des" class="layui-form-label"> <span class="x-red">*</span>描述</label>
+                <div class="layui-input-block">
+                    <textarea placeholder="请输入内容" id="des" name="des" lay-verify="required" class="layui-textarea"></textarea>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="url" class="layui-form-label"> <span class="x-red">*</span>链接</label>
+                <div class="layui-input-block">
+                    <input type="text" id="url" name="url"  lay-verify="required" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label for="file" class="layui-form-label"> <span class="x-red">*</span>图标</label>
+                <div class="layui-input-block">
+                    <div class="layui-upload">
+                        <input id="file" name="file"  type="file" onchange="changepic()" accept="">
+                        <div class="layui-upload-list">
+                            <img class="layui-upload-img" id="demoimg">
+                            <p id="demoText"></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-form-item">
+                <label for="footurl" class="layui-form-label">底部链接</label>
+                <div class="layui-input-block">
+                    <input type="text" id="footurl" name="footurl"  placeholder="{:request()->server()['REQUEST_SCHEME']}://{:request()->header()['host']}" autocomplete="off" class="layui-input">
+                </div>
+            </div>
+
+
+
+            <div class="layui-form-item">
+                <button class="layui-btn fr" lay-filter="add" lay-submit="">增加</button>
+
+            </div>
+        </form>
+    </div>
+</div>
+<script>layui.use(['form', 'layer'],
+    function() {
+        $ = layui.jquery;
+        var form = layui.form,
+            layer = layui.layer;
+        //监听提交
+        form.on('submit(add)',
+            function (data) {
+                var fm=new FormData();
+                for(let key  in data.field){
+                    if(key!='file')
+                        fm.append(key,data.field[key])
+                }
+                fm.append('file',document.getElementById('file').files[0]);
+                $.ajax({
+                    type:'post',
+                    url:'/amanmin/tools/add',
+                    data:fm,
+                    processData: false, // 告诉jQuery不要去处理发送的数据
+                    contentType: false, // 告诉jQuery不要去设置Content-Type请求头
+                    success:function (res) {
+                        if (res.code == 1) {
+                            layer.msg(res.msg,{time:1000},function () {
+                                xadmin.father_reload();
+                            });
+                            layer.close(index)
+                        } else {
+                            layer.msg(res.msg, {
+                                anim:6,
+                                icon: 5,
+                                time: 2000
+                            });
+                        }
+
+                    }
+                });
+                return false;
+            });
+
+    });
+function changepic() {
+    var reads= new FileReader();
+    f=document.getElementById('file').files[0];
+    reads.readAsDataURL(f);
+    reads.onload=function (e) {
+        document.getElementById('demoimg').src=this.result;
+    };
+}
+
+</script>
+
+{include file="public/foot"}
+</body>
+</html>

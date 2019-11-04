@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html class="x-admin-sm">
+{include file="public/head"}
+<body style="background: #fff">
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body ">
+                    <form class="layui-form">
+                        <div class="layui-form-item">
+                            <label for="title" class="layui-form-label">标题</label>
+                            <div class="layui-input-block">
+                                <input type="text" id="title" value="{$obj.title}" name="title" required  class="layui-input">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <input type="hidden" name="id" value="{$obj.id}">
+                            <label for="editer" class="layui-form-label">内容</label>
+                            <div class="layui-input-block">
+                                <textarea id="editer" class="layui-textarea">{$obj.content|raw}</textarea>
+                            </div>
+                        </div>
+
+                        <div class="layui-form-item">
+                            <label class="layui-form-label"></label>
+                            <button class="layui-btn" style="float: right" lay-filter="add" lay-submit="">
+                                保存
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    layui.use(['form', 'layedit', 'layer'],
+        function () {
+            $ = layui.jquery;
+            var form = layui.form,
+                layer = layui.layer;
+            var layedit = layui.layedit;
+            layedit.set({
+                uploadImage: {
+                    url: '/amanmin/api/ly_upload_img',
+                    accept: 'image',
+                    acceptMime: 'image/*',
+                    exts: 'jpg|png|gif|bmp|jpeg',
+                    size: '10240'
+                }
+                , calldel: {
+                    url: '/amanmin/api/ly_del_img'
+                }
+                , codeConfig: {
+                    hide: true,
+                    default: 'javascript'
+                }
+                , tool: [
+                    'html', 'code', 'strong', 'italic', 'underline', 'del', 'addhr', '|', 'fontfamily', 'fontSize', 'fontFomatt', 'colorpicker', 'face'
+                    , '|', 'left', 'center', 'right', '|', 'link', 'unlink', 'images', 'image_alt',
+                    '|', 'table', 'fullScreen'
+                ]
+                , height: '430px'
+            });
+
+            var ieditor = layedit.build('editer');
+
+            //监听提交
+            form.on('submit(add)',
+                function (data) {
+                    var post = data.field;
+                    post.content = layedit.getContent(ieditor)
+                    $.post({
+                        url: '/amanmin/notice/edit',
+                        data: post,
+                        success(data) {
+                            if (data.code == 1) {
+                                layer.msg(data.msg, {time:1000}, function () {
+                                    xadmin.close();
+                                    xadmin.father_reload();
+                                });
+                            } else {
+                                layer.msg(data.msg, {
+                                    anim: 6,
+                                    icon: 5,
+                                    time: 2000
+                                });
+                            }
+                        }
+                    });
+
+                    return false;
+                });
+
+
+        });</script>
+
+</body>
+{include file="public/foot"}
+</html>
