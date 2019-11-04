@@ -1,4 +1,4 @@
-![](http://ctf.194nb.com/static/home/img/alogo.png) 
+<div  align=center><img src="http://ctf.194nb.com/static/home/img/alogo.png" width="200" /></div>
 
 Aman CTF
 ===============
