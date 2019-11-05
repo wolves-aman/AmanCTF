@@ -6,8 +6,10 @@ class Index extends Base
     public function index()
     {
         //排行榜
-        $list=model('user')->getSortList()->toArray();
-
+        $list=model('user')->getSortList();
+        if($list){
+            $list=$list->toArray();
+        }
         $this->assign("list",$list);
         //最新注册
         $list=model('user')->getList(['order'=>'reg'],15);

@@ -32,15 +32,21 @@ class User extends Model
 
     public function getSortList($len=15){
         $order=['get_count_sum'=>'desc','end_time'=>'asc'];
-        return $this
-            ->withSum('getCount','value')
-            ->withCount('getCount')
-            ->where('status','1')
-            ->with('etime')
-            ->order($order)
-            ->limit($len)
-            ->select();
+        $num=$this->where('status','1')->count();
+        if($num>0){
+            $res=$this
+                ->with('etime')
+                ->withSum('getCount','value')
+                ->withCount('getCount')
+                ->where('status','1')
+                ->order($order)
+                ->limit($len)
+                ->select();
+        }else{
+            $res=[];
+        }
 
+        return $res;
     }
 
     //登录校验
