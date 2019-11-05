@@ -32,7 +32,7 @@ class User extends Model
 
     public function getSortList($len=15){
         $order=['get_count_sum'=>'desc','end_time'=>'asc'];
-        $num=$this->where('status','1')->count();
+        $num=model('solveLog')->count();
         if($num>0){
             $res=$this
                 ->with('etime')
