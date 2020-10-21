@@ -38,5 +38,5 @@ Aman CTF
 
 + [作者博客](http://194nb.com)
 
-+ [QQ讨论群(后续开源其他项目均在此群通知)](https://jq.qq.com/?_wv=1027&k=53g3pqh)
++ [QQ讨论群(后续开源其他项目均在此群通知)](https://qm.qq.com/cgi-bin/qm/qr?k=b5jNuBBEeSE1bvAD85mmT-Q9kzcZFsPk&jump_from=webapi)
 
